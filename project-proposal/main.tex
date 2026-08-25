@@ -1,4 +1,5 @@
 \documentclass[11pt,a4paper]{article}
+
 \usepackage[margin=1in]{geometry}
 \usepackage{hyperref}
 \usepackage{enumitem}
@@ -10,19 +11,21 @@
 % -----------------------------------------------------
 
 % Variable: Lab Instructor
-\makeatletter \newcommand{\BvrSetLabInstructor}[1]{%
-  \gdef\Bvr@LabInstructor{#1}}
+\makeatletter
+\newcommand{\BvrSetLabInstructor}[1]{%
+  \gdef\Bvr\@LabInstructor{#1}}
 % default
-\newcommand{\Bvr@LabInstructor}{Dr. Raghav %
-  B. Venkataramaiyer}
+\newcommand{\Bvr\@LabInstructor}{Dr. Raghav B. Venkataramaiyer}
 % public accessor
-\newcommand{\BvrLabInstructorValue}{\Bvr@LabInstructor}
+\newcommand{\BvrLabInstructorValue}{\Bvr\@LabInstructor}
 \makeatother
 
 % Add subtitle
 \usepackage{titling}
+
 % -- Set title bold
 \pretitle{\begin{center}\bfseries\fontsize{18bp}{18bp}\selectfont}
+
 \makeatletter
 \newcommand{\BvrSubtitle}[1]{%
   \posttitle{%
@@ -38,205 +41,335 @@
 
 % -----------------------------------------------------
 
-\title{Grievance-Resolution System for a Tier-2/3 City}
+\title{AI-Code Security Platform}
 
 \BvrSetLabInstructor{Dr. Raghav B. Venkataramaiyer}
 
 \BvrSubtitle{%
-  Project Proposal for UCS503P  \\
-  Submitted to: \BvrLabInstructorValue \\ \bfseries
-  Thapar Institute of Engineering and Technology% 
+  Project Proposal for UCS503P  \\\\
+  Submitted to: \BvrLabInstructorValue \\\ \bfseries
+  Thapar Institute of Engineering and Technology%
 }
 
 \author{
-  Vidya Vaidyanathan, CSED%
-  \thanks{Roll No: \texttt{1024030xxx}, %
-    Email: \texttt{vvaidhanathan\_be24\@thapar.edu}}
-  \and 
-  Bhanurekha Ganesan, CSED%
-  \thanks{Roll No: \texttt{1024030xxx}, %
-    Email: \texttt{bganesan\_be24\@thapar.edu}}
+  Vidhi Saxena, CSED%
+  \thanks{Roll No: \texttt{1024030700}}
+  \and
+  Yashti Mittal, CSED%
+  \thanks{Roll No: \texttt{1024030701}}
+  \and
+  Rajat Verma, CSED%
+  \thanks{Roll No: \texttt{1024030696}}
 }
 
 \date{\today}
 
 \begin{document}
+
 \maketitle
 
-\section{Higher-order goal%
+\section{Higher-order goal
   \BvrHint{\ldots secondary framing}}
-This project aims to improve sustainable urban
-governance by reducing the time and effort required to
-resolve citizen issues. While the topic is broader than
-any single municipality, the immediate engineering
-objective is to translate \emph{efficient public
-  service delivery} into a measurable, deployable
-software solution.
 
-\section{Time-to-value %
-\BvrHint{\ldots primary heuristic}}
+More and more code is now written with the help of AI tools. This is fast, but it skips a lot of basic safety habits: a hardcoded password, no check on who can access a page, or an old library with a known vulnerability.
+
+This project builds one tool that catches these mistakes at every point they can happen: before the code is generated, while it is being typed, when it is pushed to GitHub, and later during a deeper scheduled check.
+
+The bigger goal is to make AI-written code as safe as code written carefully by hand, without slowing developers down.
+
+\section{Time-to-value
+  \BvrHint{\ldots primary heuristic}}
+
 \begin{itemize}[leftmargin=0.7cm]
-    \item We will deliver meaningful increments quickly by prototyping the core user workflow and validating it with users within a short iteration window.
-    \item We will prioritize fast feedback over perfection by using weekly iterations (and targeting CI-backed automation early) to reduce release friction.
-    \item Success is defined by what can be delivered and measured in the first iteration, then improved based on user feedback.
+
+    \item We build the smallest useful piece first: one working check, end to end, and get it running quickly instead of designing everything before writing code.
+
+    \item We work in short cycles, test each new check on real sample repositories, and fix what does not work before adding the next feature.
+
+    \item Success in the first round is simple: one check, such as finding a leaked password, actually catches the issue and shows a report that a normal developer can understand and fix.
+
 \end{itemize}
 
 \section{Problem Statement}
-Citizens in a tier-2/3 Indian city face delays and uncertainty when reporting local issues (e.g., streetlight outages, water leakage, garbage accumulation, road potholes). Common pain points include:
+
+Right now, AI coding tools are really good at writing code, but they do not always check whether that code is secure.
+
+There are already tools that can find security problems, but each tool does a different job. One might check whether a password or API key was exposed, another checks for outdated libraries, and another looks for insecure coding practices.
+
+The problem is that developers have to use all these tools separately and understand different reports from each of them. This can be confusing and time-consuming.
+
+Many security issues are also found too late, sometimes only after the code has been merged or deployed. By then, the problem could already cause damage.
+
+Even when a security issue is detected, the report can be full of complicated security terms, making it hard for an average developer to understand what went wrong and how to fix it.
+
+Over time, repositories can also become cluttered with old files, unused code, and outdated documentation, making it harder to understand what is actually important.
+
+In short, the pain points are:
+
 \begin{itemize}[leftmargin=0.7cm]
-    \item \textbf{Fragmentation:} complaints are often made via multiple channels (calls, social media, paper forms), causing lost context.
-    \item \textbf{Low transparency:} citizens cannot easily see the status of their complaint (e.g., ``received'', ``assigned'', ``in progress'', ``resolved'').
-    \item \textbf{Slow coordination:} departments/field teams lack a unified, trackable workflow with clear ownership.
-    \item \textbf{Poor data quality:} duplicate or incomplete reports force rework and extend resolution time.
+
+    \item \textbf{Too many separate tools:} Developers have to check different types of security issues using different tools.
+
+    \item \textbf{Problems are found too late:} Security mistakes might only be discovered after the code is merged or deployed.
+
+    \item \textbf{Reports are hard to understand:} Developers may not know what the problem means or how to fix it.
+
+    \item \textbf{Repositories become messy:} Old and unused files make the project harder to manage.
+
 \end{itemize}
 
-\textbf{Why this matters now (contextual relevance):} In an urban setting with limited staff bandwidth, even small process improvements can noticeably reduce resolution delays and repeated submissions.
+\section{Proposed Solution
+  \BvrHint{\ldots Software Proposition}}
 
-\section{Proposed Solution %
-\BvrHint{\ldots Software Proposition}}
 \subsection{Overview}
-Build a \textbf{web-based} ``Grievance-to-Resolution'' system with the following components:
+
+The idea is simple: security checks should happen wherever code enters the picture, and every check should end up in one shared place, with one shared way of explaining what is wrong and how to fix it.
+
+There are four modules, each attached to a different moment in a developer's workflow:
+
+\begin{verbatim}
+ENTRY POINTS
+
+GitHub repo --------------> Module 1 (scan the repo, give a fix report)
+
+IDE / editor --------------> Module 2 (check code as it is written, before push)
+
+AI prompt --------------> Module 3 (make the prompt safer, before code is generated)
+
+Scheduled scan --------------> Module 4 (deep periodic scan + clean-up of junk files/docs)
+
+                              |
+                              v
+
+- same list of checks, same rule book
+- all findings collected in one place, duplicates merged
+- ranked by how serious/reachable the problem really is
+- every finding explained in plain words + a fix
+
+                              |
+                              v
+
+OUTPUT
+
+- comment on the pull request (Module 1)
+- warning inside the editor (Module 2)
+- safer prompt sent to the AI model (Module 3)
+- one combined report + dashboard (Module 4)
+\end{verbatim}
+
+\subsection{What Each Module Actually Does}
+
+\subsubsection{Module 1 -- Repo Scan and Fix Report (GitHub repo)}
+
 \begin{itemize}[leftmargin=0.7cm]
-    \item \textbf{Citizen submission portal:} users submit an issue with photo (optional), category, and locality/ward.
-    \item \textbf{Automated triage:} basic duplicate detection and completeness checks.
-    \item \textbf{Department workflow:} assign issues to relevant department/team and update statuses.
-    \item \textbf{Status transparency:} citizens track status and receive notifications when resolved.
-    \item \textbf{Admin/ops dashboard:} performance summaries (resolution time, backlog).
+
+    \item Connects to an existing GitHub repository.
+
+    \item Scans the code for leaked passwords/keys, outdated or risky libraries, and common unsafe code patterns.
+
+    \item Turns every problem found into a plain-language report explaining the risk and exactly how to fix it, then posts it as a comment on the pull request so it appears where the developer is already looking.
+
+    \item Never changes code by itself. It only suggests a fix; a person has to accept it.
+
 \end{itemize}
 
-\subsection{Core workflow}
+\subsubsection{Module 2 -- Editor Check (IDE)}
+
+\begin{itemize}[leftmargin=0.7cm]
+
+    \item Works inside the code editor while new code is being written or pasted, checking only the new changes instead of scanning the entire existing repository.
+
+    \item Catches security problems immediately, such as accidentally exposing an API key or password, using an unsafe coding pattern, or introducing other risky code before it is pushed to GitHub.
+
+    \item Acts as an early warning system for future code, helping developers fix problems as they write them.
+
+\end{itemize}
+
+\subsubsection{Module 3 -- Prompt Hardening (AI prompt)}
+
+\begin{itemize}[leftmargin=0.7cm]
+
+    \item Steps in before the code is generated by an AI coding assistant.
+
+    \item Quietly adds safety instructions developers usually forget to mention, such as using parameterised queries, adding rate limiting to login endpoints, and never hardcoding secrets.
+
+    \item Does not find problems itself; it stops many problems from ever being created in the first place.
+
+\end{itemize}
+
+\subsubsection{Module 4 -- Deep, Scheduled Scan}
+
+\begin{itemize}[leftmargin=0.7cm]
+
+    \item Runs on a schedule, such as nightly or weekly, so it has time to perform a slower and deeper pass than Modules 1 and 2.
+
+    \item Looks for issues that need more time to check properly and produces one combined report ranked by how serious and reachable each issue actually is.
+
+    \item Also cleans house by flagging files that are no longer used, duplicate or leftover code, and outdated markdown or notes. It only suggests removals for human approval.
+
+\end{itemize}
+
+\subsection{How the Four Modules Connect Into One Project}
+
+All four modules share the same underlying rule book, so the logic is written once and reused everywhere instead of creating four separate tools.
+
+Every finding, no matter which module caught it, is written in the same simple format: what file, what line, what the risk is in plain words, and how to fix it.
+
+A shared engine then removes duplicate findings, ranks findings by how serious and reachable they really are, and turns each one into a plain-language explanation with a fix.
+
+This is what makes it one project instead of four disconnected tools: one rule book, one shared brain, and four different doors into it.
+
+The order also matters: Module 3 acts before any code exists (prevention), Modules 1 and 2 act as code is written and pushed (interception), and Module 4 acts afterwards on a schedule (audit and clean-up).
+
+\subsection{Keeping It Practical to Build}
+
+\begin{itemize}[leftmargin=0.7cm]
+
+    \item Keep it usable on normal laptops and normal web hosting, with no heavy infrastructure required.
+
+    \item Reuse well-known, trusted tools for solved parts and spend original effort only where existing tools do not solve the complete workflow.
+
+    \item Nothing is ever auto-applied without a human accepting it: every fix and every file removal is a suggestion.
+
+\end{itemize}
+
+\section{Solution Approach
+  \BvrHint{\ldots Engineering focus}}
+
+\subsection{How Detection Works}
+
+Detecting a leaked key or password can use three simple checks together:
+
 \begin{enumerate}[leftmargin=0.7cm]
-    \item Citizen creates a complaint and receives a complaint ID immediately.
-    \item System validates completeness and suggests possible duplicates (lightweight similarity on text/category and approximate location).
-    \item Department staff update status (Received $\rightarrow$ Assigned $\rightarrow$ In Progress $\rightarrow$ Resolved).
-    \item Citizen views status updates and resolution notes.
+
+    \item Matching against known key formats, such as cloud-provider or service-token formats.
+
+    \item Checking how random-looking a string is, since real secrets often have high entropy.
+
+    \item Flagging risky filenames such as \texttt{.env} or \texttt{id\_rsa} before even reading their contents.
+
 \end{enumerate}
 
-\subsection{Operational constraints for an educational, tier-2/3 setting}
-\begin{itemize}[leftmargin=0.7cm]
-    \item Keep the solution usable on low-to-mid range devices via responsive web design.
-    \item Avoid dependence on advanced research algorithms; focus on workflow, automation, and system correctness.
-    \item Design for deployability using common web hosting and managed databases.
-\end{itemize}
+This detection logic is built once as a shared component and called by Module 1 on push and Module 2 inside the editor.
 
-\section{Solution Approach %
-\BvrHint{\ldots Engineering focus}}
-This is an engineering course project, so we focus on scalable administrative and workflow aspects rather than novel algorithm research.
+\subsection{Basic Architecture}
 
-\subsection{Duplicate/quality assistance %
-\BvrHint{\ldots non-research}}
-Duplicate detection will be heuristic-based:
-\begin{itemize}[leftmargin=0.7cm]
-    \item Normalize text (category + short description keywords).
-    \item Use a simple similarity measure (e.g., token overlap / TF-IDF cosine with threshold) without claiming state-of-the-art.
-    \item Show top candidate duplicates to staff for decision; never fully auto-delete or auto-reject.
-\end{itemize}
+\textbf{IDE Extension:} Developers install the extension in their IDE. Once enabled, it continuously checks new code they write or paste and warns them about possible security issues before the code is pushed.
 
-\subsection{Web architecture %
-\BvrHint{\ldots web-based solution}}
-A typical 3-tier web architecture:
-\begin{itemize}[leftmargin=0.7cm]
-    \item \textbf{Frontend:} responsive UI for citizens and staff (status pages, submission form, dashboard).
-    \item \textbf{Backend API:} authentication, complaint submission, status transitions, assignment logic.
-    \item \textbf{Database:} store users, complaints, status history, attachments metadata.
-\end{itemize}
+\textbf{Shared Security Engine:} This is the main brain of the system. It runs security checks, identifies leaked credentials, unsafe code patterns, and risky dependencies, removes duplicate findings, and ranks issues based on severity and reachability. It then explains each problem in simple language and provides clear suggestions.
 
-\subsection{CI/CD and fast delivery enabler}
-CI/CD will be used to:
-\begin{itemize}[leftmargin=0.7cm]
-    \item Automatically build and run tests on every change.
-    \item Produce repeatable deployment artifacts to staging.
-    \item Enable safe and frequent releases of incremental features.
-\end{itemize}
+\textbf{Storage and History:} The system keeps track of previously detected issues, where they were found, and whether they have been fixed or ignored. It does not store the actual value of a leaked password, API key, or other secret.
 
-\section{Evaluation Criterion %
-\BvrHint{\ldots measurable and attributable}}
-We define success using measurable metrics tied to the core workflow.
+\subsection{Fast, Safe Delivery}
+
+Every change to the tool is automatically built and tested before it goes anywhere and can be pushed to a staging version safely and often.
+
+This keeps releases small, frequent, and low-risk instead of creating one large risky release.
+
+\section{Evaluation Criterion
+  \BvrHint{\ldots measurable and attributable}}
 
 \subsection{Primary evaluation metric}
-\textbf{Time-to-acknowledgement (TTA):} time between complaint submission and ``Received/Assigned'' status creation in the system.
+
+\textbf{Time-to-catch:} the time between a risky piece of code being written or pushed and the tool flagging it.
+
 \begin{itemize}[leftmargin=0.7cm]
-    \item Target: median TTA $\le$ 2 hours during pilot window.
-    \item Attribution: measured from database timestamps (submission vs. first status update by staff).
+
+    \item Target: under a couple of minutes for Module 1 and Module 2.
+
 \end{itemize}
 
 \subsection{Secondary evaluation metrics}
+
 \begin{itemize}[leftmargin=0.7cm]
-    \item \textbf{Resolution time reduction:} reduce time-to-resolved compared to baseline process (even if baseline is collected via survey).
-    \item \textbf{Duplicate rate:} percentage of complaints flagged as duplicates and resolved without rework.
-    \item \textbf{User clarity:} citizen-reported clarity of status using a simple 1--5 feedback question.
-    \item \textbf{Reliability:} availability of staging/production for login and submission during business hours (e.g., $\ge$ 99\% uptime in pilot).
+
+    \item False-positive rate on the checks, kept as close to zero as possible.
+
+    \item Number of real issues found and actually fixed, not just flagged.
+
+    \item Number of junk files and outdated documents correctly identified by Module 4.
+
+    \item A simple 1--5 clarity score from test users: can they understand and act on a report without help?
+
 \end{itemize}
 
-\subsection{Pilot validation plan %
-\BvrHint{\ldots high-level}}
-\begin{itemize}[leftmargin=0.7cm]
-    \item Recruit 10--20 pilot users (citizens) and 3--5 staff roles (department simulation if real staff unavailable).
-    \item Compare metrics before/after within the iteration window by logging baseline estimates via short interviews or existing process observations.
-\end{itemize}
+\section{Scalability
+  \BvrHint{\ldots with foresight}}
 
-\section{Scalability %
-\BvrHint{\ldots with foresight}}
-The proposition should scale in both theoretical and practical senses.
+The system grows easily because the four entry points are different doors into one shared engine. Adding a new type of check means teaching the shared engine once, not four times.
 
-\begin{enumerate}[leftmargin=0.7cm]
-    \item \textbf{Scalable (theoretically):} The system should support growth in number of complaints and concurrent dashboard usage by:
-    \begin{itemize}[leftmargin=0.7cm]
-        \item decoupling components (frontend/backend),
-        \item enabling pagination and indexing for common queries,
-        \item using stateless API design.
-    \end{itemize}
-    
-    \item \textbf{Operationally deployable (practically):} The system should run on common web hosting:
-    \begin{itemize}[leftmargin=0.7cm]
-        \item managed database,
-        \item containerized or platform-hosted deployment,
-        \item CI/CD pipeline for staging/production.
-    \end{itemize}
-\end{enumerate}
+The components are also decoupled: the editor extension, GitHub app, and scheduled job communicate with the same engine independently, allowing any one component to be scaled up if it gets more usage.
+
+In practice, the system can run on ordinary hosting using a queue for scan jobs, short-lived isolated workers for scanning, and a normal database for findings history.
 
 \section{Engine availability heuristic}
-A mature set of ``engines'' (tooling/services) is available to implement this as a web-based project:
-\begin{itemize}[leftmargin=0.7cm]
-    \item Web framework for REST APIs and templated/reactive pages.
-    \item Managed relational or document database.
-    \item Authentication approach (token-based or session-based).
-    \item Object storage for optional attachments (or local storage for pilot).
-    \item Test framework for unit/integration tests.
-    \item CI runner and staging deployment target.
-\end{itemize}
-We will use these mature components to focus on workflow design, correctness, and measurement rather than inventing new infrastructure.
 
-\section{Project scope and deliverables %
-\BvrHint{\ldots iteration-friendly}}
-\subsection{Initial deliverable %
-\BvrHint{\ldots first iteration}}
+A mature set of tools is available to implement the system without rebuilding solved components from scratch:
+
 \begin{itemize}[leftmargin=0.7cm]
-    \item Citizen submission form + complaint ID generation
-    \item Staff workflow: update status and assignment
-    \item Citizen status page: view timeline/history
-    \item Basic logging and timestamps for TTA measurement
-    \item CI: build + backend unit tests + linting
-    \item CD to staging with a single command or pipeline job
+
+    \item \textbf{Finding leaked keys/passwords:} Gitleaks / TruffleHog, wrapped with our own allow-list.
+
+    \item \textbf{Finding outdated/risky libraries:} OSV-Scanner.
+
+    \item \textbf{Finding unsafe code patterns:} Semgrep with our own rule set for AI-generated code.
+
+    \item \textbf{Connecting to GitHub on push:} GitHub App + webhook framework such as Probot.
+
+    \item \textbf{Running scan jobs without blocking:} a simple job queue such as Redis-based infrastructure.
+
+    \item \textbf{Editor integration:} standard editor-extension APIs with the shared rule engine.
+
+\end{itemize}
+
+Using proven tools for solved parts means the original work can focus on prompt hardening, shared plain-language explanations, ranking by real-world risk, and repository clean-up suggestions.
+
+\section{Project scope and deliverables
+  \BvrHint{\ldots iteration-friendly}}
+
+\subsection{Initial deliverable
+  \BvrHint{\ldots first iteration}}
+
+\begin{itemize}[leftmargin=0.7cm]
+
+    \item Module 1: connect to a repository, catch leaked keys and outdated libraries, and post a plain-language comment with a fix on the pull request.
+
+    \item Shared engine: one findings format, duplicate removal, and plain-language explanations.
+
+    \item Basic automatic build and test on every change.
+
 \end{itemize}
 
 \subsection{Subsequent deliverables}
+
 \begin{itemize}[leftmargin=0.7cm]
-    \item Lightweight duplicate suggestions with staff review
-    \item Notification layer (email/SMS optional in later iteration; can start with in-app notifications)
-    \item Admin dashboard for metrics and backlog
-    \item Improved search/filtering and indexed queries for scale readiness
+
+    \item Module 2: editor extension reusing the same rule engine and checking code as it is typed.
+
+    \item Module 3: prompt-hardening step, tested by comparing generated code before and after hardening.
+
+    \item Module 4: deeper scheduled scan, junk-file and outdated-document suggestions, and a combined dashboard.
+
 \end{itemize}
 
 \section{Risks and mitigations}
+
 \begin{itemize}[leftmargin=0.7cm]
-    \item \textbf{Data privacy / consent:} minimize collected data; keep attachments optional; store only what is needed.
-    \item \textbf{Staff adoption:} provide an easy UI for status updates; keep workflow steps minimal; include shortcuts.
-    \item \textbf{Evaluation measurement ambiguity:} instrument timestamps and define clear status transitions before development begins.
-    \item \textbf{Operational issues in pilot:} use staging early; ensure CI/CD produces repeatable deployments.
+
+    \item \textbf{Too many false alarms:} ship an allow-list for test files, placeholders, and documentation from the beginning.
+
+    \item \textbf{Incorrectly flagging a file as junk:} only suggest removal for human approval; never delete automatically.
+
+    \item \textbf{Accidentally exposing a secret while scanning:} never log or store the raw secret value; store only masked or hashed representations when needed.
+
+    \item \textbf{Developers not adopting the tool because reports are hard to understand:} keep every finding in plain words with a clear next step and validate the explanations with real users.
+
 \end{itemize}
 
 \section{Summary}
-This project proposes a deployable web platform to reduce grievance handling delays in a tier-2/3 city context. It meets the course criteria by emphasizing time-to-value through rapid iterations, implementing CI/CD to support frequent safe releases, and using measurable evaluation criteria (especially time-to-acknowledgement). It remains focused on engineering workflow and scalability readiness rather than research-driven novelty.
+
+This project builds one connected security tool for AI-written code, entered from four different points: the GitHub repository, the code editor, the AI prompt itself, and a scheduled deep scan.
+
+All four modules share one rule book and one security engine underneath. The project focuses on delivering useful functionality quickly, reusing trusted existing tools instead of reinventing them, and measuring success with a clear metric: how quickly a real problem gets caught and how easily a normal developer can fix it once it is.
 
 \end{document}
