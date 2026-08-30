@@ -168,6 +168,7 @@ The planned structure is:
 
 Based on the discussions and initial research, we designed the first architecture for Module 1.
 
+```
 GitHub Repository
    |
    v
@@ -197,6 +198,7 @@ Fix Recommendation
    |
    v
 GitHub Pull Request Comment
+```
 
 The main purpose of the Security Engine is to act as the common layer between the different scanners and the GitHub interface.
 
