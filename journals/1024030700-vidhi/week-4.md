@@ -50,17 +50,17 @@ The command:
 
 ```text
 python
-  ↓
+  |
 threatlens.py
-  ↓
+  |
 SecurityEngine
-  ↓
+  |
 Gitleaks + OSV-Scanner + Semgrep
-  ↓
+  |
 Normalize + Deduplicate + Sort
-  ↓
+  |
 Report Generator
-  ↓
+  |
 ThreatLens Security Report
 ```
 
@@ -123,14 +123,14 @@ Stage 3 was completed successfully. ThreatLens now provides a complete local wor
 
 ```text
 Repository
-    ↓
+    |
 Security Scan
-    ↓
+    |
 Gitleaks + OSV + Semgrep
-    ↓
+    |
 Unified Findings
-    ↓
+    |
 Severity + Explanation
-    ↓
+    |
 Security Report
 ```
