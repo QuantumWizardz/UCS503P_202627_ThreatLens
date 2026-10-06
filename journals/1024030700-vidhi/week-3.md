@@ -39,13 +39,7 @@ The `SecurityEngine` coordinates the scanners and collects their results.
 The basic flow is:
 
 ```text
-SecurityEngine.scan()
-        ↓
-Run scanners
-        ↓
-Collect findings
-        ↓
-Return Finding objects
+SecurityEngine.scan()->Run scanners->Collect findings->Return Finding objects
 ```
 
 A scanner failure is handled separately so that one failed scanner does not stop the remaining scanners.
