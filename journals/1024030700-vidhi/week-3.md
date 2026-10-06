@@ -81,11 +81,8 @@ The results are then:
 
 ```text
 Normalize
-   ↓
 Remove duplicates
-   ↓
 Apply severity
-   ↓
 Sort findings
 ```
 
