@@ -1,4 +1,3 @@
-
 # scanners/osv_scanner.py
 # Phase 6 – OSV-Scanner integration
 #
@@ -162,6 +161,7 @@ class OsvScanner:
             self.osv_cmd,
             "scan",
             "--format", "json",
+            "--recursive",      # also look in sub-folders (e.g. "project a/requirements.txt")
             str(repo_path),
         ]
         logger.info("Running OSV-Scanner: %s", " ".join(cmd))
@@ -174,7 +174,14 @@ class OsvScanner:
             timeout=120,
         )
 
-        # OSV-Scanner exits with 1 when vulnerabilities are found (not a real error).
+        # OSV-Scanner exit codes:
+        #   0   = scanned, no vulnerabilities
+        #   1   = scanned, vulnerabilities found   (not an error)
+        #   128 = no dependency files found at all (not an error - nothing to check)
+        if result.returncode == 128:
+            logger.info("OSV-Scanner found no dependency files (requirements.txt, package.json, ...).")
+            return {}
+
         if result.returncode not in (0, 1):
             raise RuntimeError(
                 f"OSV-Scanner exited with unexpected code {result.returncode}.\n"
