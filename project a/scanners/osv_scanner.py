@@ -102,7 +102,7 @@ class OsvScanner:
     """
 
     # OSV-Scanner may be in PATH or in the project directory as a .exe
-    DEFAULT_COMMANDS = ["osv-scanner", "osv-scanner.exe"]
+    DEFAULT_COMMANDS = ["osv-scanner", "osv-scanner.exe"] if os.name == "nt" else ["osv-scanner"]
 
     def __init__(self, osv_cmd: str = None):
         """
@@ -123,15 +123,16 @@ class OsvScanner:
                 )
                 if result.returncode == 0:
                     return cmd
-            except FileNotFoundError:
+            except (FileNotFoundError, PermissionError):
                 continue
 
         # 2. Check same directory as the project root
         #    scanners/osv_scanner.py -> .parent = scanners/ -> .parent = project root
         project_root = Path(__file__).resolve().parent.parent
-        for name in ["osv-scanner.exe", "osv-scanner"]:
+        names = ["osv-scanner.exe", "osv-scanner"] if os.name == "nt" else ["osv-scanner"]
+        for name in names:
             candidate = project_root / name
-            if candidate.exists():
+            if candidate.exists() and (os.name == "nt" or os.access(candidate, os.X_OK)):
                 logger.info("OSV-Scanner found at: %s", candidate)
                 return str(candidate)
 
